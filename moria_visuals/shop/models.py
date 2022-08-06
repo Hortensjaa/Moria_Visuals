@@ -1,16 +1,12 @@
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
-
-# Create your models here.
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Sum
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from .types_and_sizes import SIZES, TYPES
-
-
-# class Customer(User):
-#     pass
 
 
 class Product(models.Model):
@@ -76,6 +72,22 @@ class CartItem(models.Model):
     count = models.IntegerField(default=1)
 
 
+class Customer(AbstractUser):
+    username = models.CharField(max_length=30, unique=False)
+    email = models.EmailField(max_length=255, unique=True)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    last_purchase = models.DateTimeField(blank=True)
+
+    def __str__(self):
+        if self.first_name is not None:
+            return self.first_name
+        return self.email
+
+
 class Cart(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
     items = models.ManyToManyField(CartItem)
+
+    def confirm_order(self):
+        pass

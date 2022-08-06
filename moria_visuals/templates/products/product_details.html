@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Moria Visuals{% endblock %}
+
+{% block content %}
+<a href=http://127.0.0.1:8000/><p>Back</p></a>
+<h1>{{ product.name }}</h1>
+<h2>{{ product.price }} zł</h2>
+<p>{{ product.description }}</p>
+<ul>
+{% for size in sizes %}
+    {% if size.is_available == 1 %}
+        <li><a href=#choose><p>{{ size.size }}</p></a>
+    {% else %}
+        <li><p>{{ size.size }} - niedostępny</p>
+    {% endif %}
+{% endfor %}
+</ul>
+<a href=#add_to_cart><h3>Add to cart</h3></a>
+{% endblock %}

@@ -1,14 +1,35 @@
 from django.contrib import admin
+from .models import *
 
 from django.contrib import admin
-from .models import *
-# Register your models here.
+from django.contrib.auth.admin import UserAdmin
+
+from .forms import CustomerCreationForm, CustomerChangeForm
+from .models import Customer
+
+
+class CustomerAdmin(UserAdmin):
+    add_form = CustomerCreationForm
+    form = CustomerChangeForm
+    model = Customer
+    list_display = ["email", "first_name", "last_name", "is_staff"]
+    ordering = ("-is_staff", "last_name",)
+    fieldsets = ((None, {"fields": ("username", "password")}),
+                 ("Personal info", {"fields": ("first_name", "last_name", "email")}),
+                 ("Important dates", {"fields": ("last_login", "date_joined", "last_purchase")}),
+                 ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "user_permissions",),
+                                  "classes": ['collapse']}),)
+    add_fieldsets = ((None, {
+                "classes": ("wide",),
+                "fields": ("email", "password1", "password2"), },),)
+
+
+admin.site.register(Customer, CustomerAdmin)
 
 
 class Store(admin.TabularInline):
     model = ProductStore
     extra = 0
-    classes = ['collapse']
 
 
 class ProductAdmin(admin.ModelAdmin):
