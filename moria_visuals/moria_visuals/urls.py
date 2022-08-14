@@ -23,5 +23,6 @@ urlpatterns = [
     path('', HomePageView.as_view(), name='Home page'),
     path('details/', DetailView.as_view(), name='Product details page'),
     path("signup/", SignUpView.as_view(), name="signup"),
+    path("cart/", CartView.as_view(), name="cart"),
     path("accounts/", include("django.contrib.auth.urls")),
 ]

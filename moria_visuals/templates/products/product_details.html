@@ -7,14 +7,18 @@
 <h1>{{ product.name }}</h1>
 <h2>{{ product.price }} zł</h2>
 <p>{{ product.description }}</p>
-<ul>
-{% for size in sizes %}
-    {% if size.is_available == 1 %}
-        <li><a href=#choose><p>{{ size.size }}</p></a>
-    {% else %}
-        <li><p>{{ size.size }} - niedostępny</p>
-    {% endif %}
-{% endfor %}
-</ul>
-<a href=#add_to_cart><h3>Add to cart</h3></a>
+<form>
+    <fieldset>
+        {% for size in sizes %}
+            {% if size.is_available == 1 %}
+                <input type="radio" name="size" id="size{{ forloop.counter }}" value="{{ size.id }}">
+                <label for="size{{ forloop.counter }}">{{ size.size }}</label><br>
+            {% else %}
+                {{ size.size }} - niedostępny
+            {% endif %}
+        {% endfor %}
+    </fieldset>
+    <button type="submit"><h3>Add to cart</h3></button>
+</form>
+
 {% endblock %}

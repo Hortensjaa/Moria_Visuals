@@ -1,1 +1,3 @@
 .env
+shop/migrations
+moria_visuals/__pycache__

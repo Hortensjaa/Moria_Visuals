@@ -8,6 +8,11 @@ from .forms import CustomerCreationForm, CustomerChangeForm
 from .models import Customer
 
 
+class CartAdmin(admin.TabularInline):
+    model = CartItem
+    extra = 0
+
+
 class CustomerAdmin(UserAdmin):
     add_form = CustomerCreationForm
     form = CustomerChangeForm
@@ -22,6 +27,7 @@ class CustomerAdmin(UserAdmin):
     add_fieldsets = ((None, {
                 "classes": ("wide",),
                 "fields": ("email", "password1", "password2"), },),)
+    inlines = [CartAdmin]
 
 
 admin.site.register(Customer, CustomerAdmin)

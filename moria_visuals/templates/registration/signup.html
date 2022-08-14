@@ -3,7 +3,8 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-<h2>Sign Up</h2>
+<h2>You have to sign up</h2>
+<p>Keep calm, we won't send you any emails - our developer can't even make this shop available for not logged in users</p>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
