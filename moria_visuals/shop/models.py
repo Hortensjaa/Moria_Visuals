@@ -1,3 +1,4 @@
+from abc import ABC
 from urllib.parse import urlunparse
 
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -8,6 +9,7 @@ from django.db.models import Sum, F
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from annoying.fields import AutoOneToOneField
+from rest_framework import serializers
 
 from .types_and_sizes import SIZES, TYPES
 
@@ -26,6 +28,13 @@ class Product(models.Model):
     # def url(self):
     #     url = urlunparse(('http', '127.0.0.1:8000', 'details/', '', f'product={self.name}', ''))
     #     return url.replace(' ', '%20')
+
+    # def add_to_cart(self, customer):
+    #     if self.name in customer.cart.items_names:
+    #         item = filter(lambda item: item['name'] == self.name, customer.cart)
+    #         return item
+    #     else:
+    #         return
 
     @admin.display(description='price', )
     def price_string(self):
@@ -71,9 +80,6 @@ class ProductStore(models.Model):
     def is_available(self):
         return self.count != models.IntegerField(0)
 
-    def add_to_cart(self):
-        self.count -= models.IntegerField(1)
-
 
 class Customer(AbstractUser):
     username = models.CharField(max_length=30, unique=False)
@@ -101,6 +107,20 @@ class CartItem(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='products_in_cart')
     product = models.ForeignKey(ProductStore, on_delete=models.CASCADE)
     count = models.PositiveIntegerField(default=1)
+
+
+# class CartItemSerializer(serializers.Serializer, ABC):
+#     customer = serializers.RelatedField(many=False)
+#     product = serializers.RelatedField(many=False)
+#     count = serializers.IntegerField(default=1)
+#
+#     def create(self, validated_data):
+#         return CartItem.objects.create(**validated_data)
+#
+#     def update(self, instance, validated_data):
+#         instance.count = validated_data.get('count', instance.count)
+#         instance.save()
+#         return instance
 
 
 # class Cart(models.Model):

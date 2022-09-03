@@ -3,10 +3,13 @@
 {% block title %}Moria Visuals{% endblock %}
 
 {% block content %}
+{{ text }}
+<h2>Your cart:</h2>
 <ul>
     {% for product in cart %}
-    <li><a href={{product.url}}>{{ product.name }}</a> x{{ product.count }}
-    <p>{{ product.price }} zł</p></li>
+    <li><a href={{product.url}}>{{ product.name }}: {{ product.size }}</a> x{{ product.count }}
+    <p>{{ product.sum_item }} zł</p></li>
     {% endfor %}
 </ul>
+<h3>Sum: {{ summary.sum }}zł ({{ summary.number_of_items }} items)</h3>
 {% endblock %}
